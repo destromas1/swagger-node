@@ -42,10 +42,59 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+
+  /products:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: products
+    get:
+      description: Returns 'products' to the caller
+      # used as the method name of the controller
+      operationId: getAll
+      parameters:
+        - name: name
+          in: query
+          description: The name of the product
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/ProductListResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
+  
+  ProductListResponse:
+    required:
+      - products
+    properties:
+      products:
+        type: array
+        items:
+          $ref: "#/definitions/Product"
+
+  Product:
+    required:
+      - name
+      - type
+      - price
+    properties:
+      name:
+        type: string
+      type:
+        type: string
+      price:
+        type: string
+
   HelloWorldResponse:
     required:
       - message
